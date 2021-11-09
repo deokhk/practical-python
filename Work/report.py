@@ -3,15 +3,17 @@
 # Exercise 2.4
 
 import csv
+import stock
 from fileparse import parse_csv
 
 def read_portfolio(filename: str) -> list:
     '''
-    주식 포트폴리오 파일을 읽어 딕셔너리의 리스트를 생성.
-    name, shares, price를 키로 사용.
+    주식 포트폴리오 파일을 읽어 stock instance의 리스트를 생성.
+    name, shares, price를 attribute로 가짐.
     '''
     with open(filename) as file:
-        portfolio = parse_csv(file, select=['name', 'shares', 'price'], types=[str,int,float])
+        portdicts = parse_csv(file, select=['name', 'shares', 'price'], types=[str,int,float])
+    portfolio = [stock.Stock(d['name'], d['shares'], d['price']) for d in portdicts]
     return portfolio
 
 def read_prices(filename: str) -> dict:
@@ -30,9 +32,9 @@ def check_portfolio_and_gain():
     Total_gain = 0
     Total_value = 0
     for holding in portfolio:
-        name = holding["name"]
-        buying_price = holding["price"]
-        buying_quantity = holding["shares"]
+        name = holding.name
+        buying_price = holding.price
+        buying_quantity = holding.shares
         current_price = prices[name]
         Total_value += current_price * buying_quantity
         Total_gain += (current_price - buying_price) * buying_quantity
@@ -43,9 +45,9 @@ def check_portfolio_and_gain():
 def make_report(portfolio, prices):
     report = []
     for holding in portfolio:
-        name = holding["name"]
-        buying_price = holding["price"]
-        shares = holding["shares"]
+        name = holding.name
+        buying_price = holding.price
+        shares = holding.shares
         current_price = prices[name]
         change = buying_price - current_price
         report.append((name, shares, current_price, change))
