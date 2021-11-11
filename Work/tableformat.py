@@ -76,3 +76,17 @@ def print_table(portfolio, columns:list, formatter:TableFormatter):
     for s in portfolio:
         rowdata = [str(getattr(s, colname)) for colname in columns]
         formatter.row(rowdata)
+
+class Stock:
+    def __init__(self, name, shares, price):
+        self.name = name
+        self.set_shares(shares)
+        self.price = price
+    
+    def get_shares(self):
+        return self._shares 
+    
+    def set_shares(self, value):
+        if not isinstance(value, int):
+            raise TypeError("Expected an int")
+        self._shares = value

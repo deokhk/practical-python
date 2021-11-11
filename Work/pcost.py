@@ -8,10 +8,7 @@ from report import read_portfolio
 
 def portfolio_cost(filename):
     portfolio = read_portfolio(filename)
-    total_cost = 0
-    for stock in portfolio:
-        total_cost += stock.shares* stock.price
-    return total_cost
+    return sum([s.cost for s in portfolio])
 
 def main(argv):
     portfile = argv[1]
